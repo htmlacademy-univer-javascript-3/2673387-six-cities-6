@@ -6,18 +6,19 @@ import FavoritesPage from '../../pages/favorites-page/favorites-page.tsx';
 import OfferPage from '../../pages/offer-page/offer-page.tsx';
 import NotFoundPage from '../../pages/not-found-page/not-found-page.tsx';
 import PrivateRoute from '../private-route/private-route.tsx';
+import Offer from '../../types/offer.ts';
 
 type AppProps = {
-  offerCount: number;
+  offers: Offer[];
 }
 
-function App({ offerCount }: AppProps): JSX.Element {
+function App({ offers }: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainPage offerCount={offerCount} />}
+          element={<MainPage offers={offers} />}
         />
         <Route
           path={AppRoute.Login}
@@ -27,7 +28,7 @@ function App({ offerCount }: AppProps): JSX.Element {
           path={AppRoute.Favorites}
           element={
             <PrivateRoute>
-              <FavoritesPage />
+              <FavoritesPage offers={offers} />
             </PrivateRoute>
           }
         />

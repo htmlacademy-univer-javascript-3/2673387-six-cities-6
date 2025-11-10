@@ -8,7 +8,7 @@ type PrivateRouteProps = {
 };
 
 function PrivateRoute({ children }: PrivateRouteProps) {
-  const isAuth = false;
+  const isAuth = true;
 
   if (isAuth) {
     return children;
