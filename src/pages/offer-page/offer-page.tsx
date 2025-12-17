@@ -1,8 +1,8 @@
 ﻿import { Link, useParams } from 'react-router-dom';
-import type Offer from '../../types/offer.ts';
+import { Offer } from '../../types/offer.ts';
 import NotFoundPage from '../not-found-page/not-found-page.tsx';
 import OfferList from '../../components/offer-list/offer-list.tsx';
-import {MOCKED_REVIEWS} from '../../mocks/reviews.ts';
+import { MOCKED_REVIEWS } from '../../mocks/reviews.ts';
 import ReviewItem from '../../components/review-item/review-item.tsx';
 import ReviewsForm from '../../components/reviews-forms/reviews-form.tsx';
 
@@ -15,7 +15,12 @@ function OfferPage({ allOffers }: OfferPageProps): JSX.Element {
   const currentOffer = allOffers.find((offer) => offer.id === offerId);
   const nearbyOffers = allOffers.filter((offer) => offer.id !== offerId).slice(0, 3);
 
+  const reviews = MOCKED_REVIEWS
+    .filter((review) => review.offerId === offerId)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   const isUserLoggedIn = true;
+
   if (!currentOffer) {
     return <NotFoundPage />;
   }
@@ -130,10 +135,10 @@ function OfferPage({ allOffers }: OfferPageProps): JSX.Element {
               </div>
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">
-                  Reviews &middot; <span className="reviews__amount">{MOCKED_REVIEWS.length}</span>
+                  Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
                 </h2>
                 <ul className="reviews__list">
-                  {MOCKED_REVIEWS.map((review) => (
+                  {reviews.map((review) => (
                     <ReviewItem key={review.id} review={review} />
                   ))}
                 </ul>

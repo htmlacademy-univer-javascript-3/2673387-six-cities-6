@@ -1,15 +1,24 @@
-﻿type Host = {
+﻿export type CityType = 'Paris' | 'Cologne' | 'Brussels' | 'Amsterdam' | 'Hamburg' | 'Dusseldorf'
+
+export type OfferRentType = 'apartment' | 'room' | 'house' | 'hotel';
+
+export type Host = {
   name: string;
   avatarUrl: string;
   isPro: boolean;
 };
 
-type Offer = {
+export type Location = {
+  latitude: number;
+  longitude: number;
+};
+
+export type Offer = {
   id: string;
   title: string;
   description: string;
   isPremium: boolean;
-  type: string;
+  type: OfferRentType;
   rating: number;
   price: number;
   images: string[];
@@ -17,12 +26,7 @@ type Offer = {
   bedrooms: number;
   maxAdults: number;
   host: Host;
-  city: string;
-  location: {
-    latitude: number;
-    longitude: number;
-  };
+  city: CityType;
+  location: Location;
 };
 
-export default Offer;
-export type { Host };

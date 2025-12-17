@@ -1,13 +1,12 @@
 ﻿import { Link } from 'react-router-dom';
-import type Offer from '../../types/offer';
+import {Offer} from '../../types/offer.ts';
 
 type OfferCardProps = {
   offer: Offer;
   onMouseEnter: (offerId: string) => void;
-  onMouseLeave: () => void;
 }
 
-function OfferCard({ offer, onMouseEnter, onMouseLeave }: OfferCardProps){
+function OfferCard({ offer, onMouseEnter }: OfferCardProps){
   const {
     id,
     isPremium,
@@ -23,7 +22,6 @@ function OfferCard({ offer, onMouseEnter, onMouseLeave }: OfferCardProps){
     <article
       className="cities__card place-card"
       onMouseEnter={() => onMouseEnter(id)}
-      onMouseLeave={onMouseLeave}
     >
       {isPremium && (
         <div className="place-card__mark">

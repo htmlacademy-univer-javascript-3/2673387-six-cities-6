@@ -1,5 +1,4 @@
-﻿import type Offer from '../types/offer';
-import { Host } from '../types/offer';
+﻿import { Offer, Host } from '../types/offer';
 
 const HOSTS: Record<string, Host> = {
   'angelina': {
@@ -20,7 +19,7 @@ export const MOCKED_OFFERS: Offer[] = [
     title: 'Beautiful & luxurious apartment at great location',
     description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.',
     isPremium: true,
-    type: 'Apartment',
+    type: 'apartment',
     rating: 4.8,
     price: 120,
     images: [
@@ -44,7 +43,7 @@ export const MOCKED_OFFERS: Offer[] = [
     title: 'Private Room in the City Center',
     description: 'A simple but cozy private room right in the heart of the city. Perfect for solo travelers or couples looking for a central base to explore.',
     isPremium: false,
-    type: 'Private Room',
+    type: 'room',
     rating: 4.2,
     price: 80,
     images: [
@@ -66,7 +65,7 @@ export const MOCKED_OFFERS: Offer[] = [
     title: 'Luxury Villa with a stunning Ural view',
     description: 'Experience the luxury in this exclusive villa. With a private pool and panoramic windows, it offers an unforgettable view of the Ural mountains.',
     isPremium: true,
-    type: 'House',
+    type: 'house',
     rating: 5.0,
     price: 350,
     images: [
@@ -86,15 +85,15 @@ export const MOCKED_OFFERS: Offer[] = [
   },
   {
     id: 'c2f4d6e8-1a0b-3c5d-7e9f-8h0i1j2k3l4m',
-    title: 'Cozy and quiet studio near the park',
-    description: 'This charming studio is perfect for a peaceful getaway. Located next to a large green park, it is ideal for walks and relaxation.',
+    title: 'Cozy and quiet hotel room near the park',
+    description: 'This charming room is perfect for a peaceful getaway. Located next to a large green park, it is ideal for walks and relaxation.',
     isPremium: false,
-    type: 'Studio',
+    type: 'hotel',
     rating: 4.5,
     price: 150,
     images: [
-      'https://placehold.co/260x200/34D399/FFFFFF?text=Cozy_Cottage_1',
-      'https://placehold.co/260x200/34D399/FFFFFF?text=Cozy_Cottage_2',
+      'https://placehold.co/260x200/34D399/FFFFFF?text=Cozy_Hotel_1',
+      'https://placehold.co/260x200/34D399/FFFFFF?text=Cozy_Hotel_2',
     ],
     goods: ['Wi-Fi', 'Heating', 'Kitchenette'],
     bedrooms: 1,

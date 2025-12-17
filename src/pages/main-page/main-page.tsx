@@ -1,11 +1,16 @@
-import Offer from '../../types/offer.ts';
 import OfferList from '../../components/offer-list/offer-list.tsx';
+import {Offer} from '../../types/offer.ts';
+import Map from '../../components/map/map.jsx';
+import {AMSTERDAM} from '../../mocks/cities.ts';
+
 
 type MainPageProps = {
   offers: Offer[];
 }
 
 function MainPage({offers} : MainPageProps): JSX.Element {
+  const locations = offers.map((offer) => offer.location);
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -98,7 +103,9 @@ function MainPage({offers} : MainPageProps): JSX.Element {
               <OfferList offers={offers}></OfferList>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map city={AMSTERDAM} locations={locations}/>
+              </section>
             </div>
           </div>
         </div>
