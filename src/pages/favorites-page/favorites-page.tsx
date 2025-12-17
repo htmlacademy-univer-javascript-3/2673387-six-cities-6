@@ -1,5 +1,5 @@
 ﻿import { Link } from 'react-router-dom';
-import type Offer from '../../types/offer';
+import type {Offer} from '../../types/offer';
 import OfferList from '../../components/offer-list/offer-list'; // Импортируем готовый список
 
 // 1. Упрощаем пропсы: странице нужен только список избранных предложений

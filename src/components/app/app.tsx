@@ -6,7 +6,7 @@ import FavoritesPage from '../../pages/favorites-page/favorites-page.tsx';
 import OfferPage from '../../pages/offer-page/offer-page.tsx';
 import NotFoundPage from '../../pages/not-found-page/not-found-page.tsx';
 import PrivateRoute from '../private-route/private-route.tsx';
-import Offer from '../../types/offer.ts';
+import {Offer} from '../../types/offer.ts';
 
 type AppProps = {
   offers: Offer[];
