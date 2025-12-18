@@ -3,10 +3,11 @@ import {Offer} from '../../types/offer.ts';
 
 type OfferCardProps = {
   offer: Offer;
+  cardType: string;
   onMouseEnter: (offerId: string) => void;
 }
 
-function OfferCard({ offer, onMouseEnter }: OfferCardProps){
+function OfferCard({ offer, cardType, onMouseEnter }: OfferCardProps){
   const {
     id,
     isPremium,
@@ -17,10 +18,13 @@ function OfferCard({ offer, onMouseEnter }: OfferCardProps){
     rating
   } = offer;
 
+  const imgSize = cardType === 'favorites'
+    ? { width: '150', height: '110' }
+    : { width: '260', height: '200' };
 
   return (
     <article
-      className="cities__card place-card"
+      className={`${cardType}__card place-card`}
       onMouseEnter={() => onMouseEnter(id)}
     >
       {isPremium && (
@@ -28,12 +32,20 @@ function OfferCard({ offer, onMouseEnter }: OfferCardProps){
           <span>Premium</span>
         </div>
       )}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+
+      <div className={`${cardType}__image-wrapper place-card__image-wrapper`}>
         <Link to={`/offer/${id}`}>
-          <img className="place-card__image" src={images[0]} width="260" height="200" alt={title}/>
+          <img
+            className="place-card__image"
+            src={images[0]}
+            width={imgSize.width}
+            height={imgSize.height}
+            alt={title}
+          />
         </Link>
       </div>
-      <div className="place-card__info">
+
+      <div className={`place-card__info ${cardType === 'favorites' ? 'favorites__card-info' : ''}`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>

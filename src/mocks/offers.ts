@@ -19,7 +19,7 @@ export const MOCKED_OFFERS: Offer[] = [
     title: 'Beautiful & luxurious apartment at great location',
     description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.',
     isPremium: true,
-    type: 'apartment',
+    type: 'Apartment',
     rating: 4.8,
     price: 120,
     images: [
@@ -43,7 +43,7 @@ export const MOCKED_OFFERS: Offer[] = [
     title: 'Private Room in the City Center',
     description: 'A simple but cozy private room right in the heart of the city. Perfect for solo travelers or couples looking for a central base to explore.',
     isPremium: false,
-    type: 'room',
+    type: 'Room',
     rating: 4.2,
     price: 80,
     images: [
@@ -65,7 +65,7 @@ export const MOCKED_OFFERS: Offer[] = [
     title: 'Luxury Villa with a stunning Ural view',
     description: 'Experience the luxury in this exclusive villa. With a private pool and panoramic windows, it offers an unforgettable view of the Ural mountains.',
     isPremium: true,
-    type: 'house',
+    type: 'House',
     rating: 5.0,
     price: 350,
     images: [
@@ -88,7 +88,7 @@ export const MOCKED_OFFERS: Offer[] = [
     title: 'Cozy and quiet hotel room near the park',
     description: 'This charming room is perfect for a peaceful getaway. Located next to a large green park, it is ideal for walks and relaxation.',
     isPremium: false,
-    type: 'hotel',
+    type: 'Hotel',
     rating: 4.5,
     price: 150,
     images: [

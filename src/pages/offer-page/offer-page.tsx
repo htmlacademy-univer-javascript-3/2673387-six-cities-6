@@ -3,27 +3,29 @@ import { Offer } from '../../types/offer.ts';
 import NotFoundPage from '../not-found-page/not-found-page.tsx';
 import OfferList from '../../components/offer-list/offer-list.tsx';
 import { MOCKED_REVIEWS } from '../../mocks/reviews.ts';
-import ReviewItem from '../../components/review-item/review-item.tsx';
-import ReviewsForm from '../../components/reviews-forms/reviews-form.tsx';
+import ReviewList from '../../components/review-list/review-list.tsx';
+import ReviewsForm from '../../components/reviews-form/reviews-form.tsx';
+import {AMSTERDAM} from '../../mocks/cities.ts';
+import Map from '../../components/map/map.tsx';
 
 type OfferPageProps = {
-  allOffers: Offer[];
+  offers: Offer[];
 }
 
-function OfferPage({ allOffers }: OfferPageProps): JSX.Element {
+function OfferPage({ offers }: OfferPageProps): JSX.Element {
   const { offerId } = useParams<{ offerId: string }>();
-  const currentOffer = allOffers.find((offer) => offer.id === offerId);
-  const nearbyOffers = allOffers.filter((offer) => offer.id !== offerId).slice(0, 3);
+  const currentOffer = offers.find((offer) => offer.id === offerId);
+  const nearbyOffers = offers.filter((offer) => offer.id !== offerId).slice(0, 3);
+  const nearbyOfferLocations = nearbyOffers.map((offer) => offer.location);
 
   const reviews = MOCKED_REVIEWS
     .filter((review) => review.offerId === offerId)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  const isUserLoggedIn = true;
-
   if (!currentOffer) {
     return <NotFoundPage />;
   }
+
 
   const {
     images,
@@ -133,25 +135,18 @@ function OfferPage({ allOffers }: OfferPageProps): JSX.Element {
                   <p className="offer__text">{description}</p>
                 </div>
               </div>
-              <section className="offer__reviews reviews">
-                <h2 className="reviews__title">
-                  Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
-                </h2>
-                <ul className="reviews__list">
-                  {reviews.map((review) => (
-                    <ReviewItem key={review.id} review={review} />
-                  ))}
-                </ul>
-                {isUserLoggedIn && <ReviewsForm />}
-              </section>
+              <ReviewList reviews={reviews} />
+              <ReviewsForm />
             </div>
           </div>
-          <section className="offer__map map"></section>
+          <section className="offer__map map">
+            <Map city={AMSTERDAM} locations={nearbyOfferLocations}/>
+          </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OfferList offers={nearbyOffers} />
+            <OfferList cardType={'near-places'} offers={nearbyOffers} />
           </section>
         </div>
       </main>

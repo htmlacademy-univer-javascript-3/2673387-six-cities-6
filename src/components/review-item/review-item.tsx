@@ -1,4 +1,4 @@
-﻿import type Review from '../../types/review';
+﻿import Review from '../../types/review.ts';
 
 type ReviewItemProps = {
   review: Review;
@@ -16,7 +16,12 @@ function ReviewItem({ review }: ReviewItemProps): JSX.Element {
     <li className="reviews__item">
       <div className="reviews__user user">
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
-          <img className="reviews__avatar user__avatar" src={user.avatarUrl} width="54" height="54" alt={`Reviews avatar for ${user.name}`} />
+          <img
+            className="reviews__avatar user__avatar"
+            src={user.avatarUrl} width="54"
+            height="54"
+            alt={`Reviews avatar for ${user.name}`}
+          />
         </div>
         <span className="reviews__user-name">{user.name}</span>
       </div>
