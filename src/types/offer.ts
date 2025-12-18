@@ -1,6 +1,6 @@
 ﻿export type CityType = 'Paris' | 'Cologne' | 'Brussels' | 'Amsterdam' | 'Hamburg' | 'Dusseldorf'
 
-export type OfferRentType = 'apartment' | 'room' | 'house' | 'hotel';
+export type OfferRentType = 'Apartment' | 'Room' | 'House' | 'Hotel';
 
 export type Host = {
   name: string;
