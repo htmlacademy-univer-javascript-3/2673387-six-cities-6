@@ -77,10 +77,10 @@ export const MOCKED_OFFERS: Offer[] = [
     bedrooms: 5,
     maxAdults: 10,
     host: HOSTS['angelina'],
-    city: 'Amsterdam',
+    city: 'Paris',
     location: {
-      latitude: 52.3909553943508,
-      longitude: 4.929309666406198,
+      latitude: 48.865610,
+      longitude: 2.350659,
     },
   },
   {
@@ -99,10 +99,10 @@ export const MOCKED_OFFERS: Offer[] = [
     bedrooms: 1,
     maxAdults: 2,
     host: HOSTS['max'],
-    city: 'Amsterdam',
+    city: 'Paris',
     location: {
-      latitude: 52.3809553943508,
-      longitude: 4.939309666406198,
+      latitude: 48.852968,
+      longitude: 2.3499021,
     },
   },
 ];

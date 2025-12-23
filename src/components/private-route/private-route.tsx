@@ -1,16 +1,16 @@
-﻿import { Navigate } from 'react-router-dom';
-import { ReactNode } from 'react';
-import {AppRoute} from '../../const.ts';
+﻿import {Navigate} from 'react-router-dom';
+import {ReactNode} from 'react';
+import {AppRoute, AuthStatus} from '../../const.ts';
 
 
 type PrivateRouteProps = {
+  authStatus: AuthStatus;
   children: ReactNode;
 };
 
-function PrivateRoute({ children }: PrivateRouteProps) {
-  const isAuth = true;
+function PrivateRoute({ children, authStatus }: PrivateRouteProps) {
 
-  if (isAuth) {
+  if (authStatus === AuthStatus.Authorised) {
     return children;
   } else {
     return <Navigate to={AppRoute.Login} />;
