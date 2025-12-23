@@ -13,6 +13,7 @@ export type OffersMapProps = {
 function Map({city, locations}: OffersMapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
+  const markerLayer = useRef(leaflet.layerGroup());
 
   const customIcon = leaflet.icon({
     iconUrl: 'markup/img/pin.svg',
@@ -22,18 +23,23 @@ function Map({city, locations}: OffersMapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
+      map.addLayer(markerLayer.current);
+
+      markerLayer.current.clearLayers();
+
       locations.forEach((location) => {
         leaflet
           .marker({
             lat: location.latitude,
             lng: location.longitude,
           },{
-            icon:customIcon
+            icon: customIcon
           })
-          .addTo(map);
+          .addTo(markerLayer.current);
       });
     }
-  }, [map, locations]);
+  }, [map, locations, customIcon]);
+
   return (
     <div
       style={{height: '100%'}}

@@ -1,6 +1,17 @@
 ﻿import {City} from '../types/city.ts';
 
+export const PARIS: City = {
+  id: 0,
+  name: 'Paris',
+  location: {
+    latitude: 48.8534,
+    longitude: 2.3488
+  },
+  zoom: 12,
+};
+
 export const AMSTERDAM: City = {
+  id: 1,
   name: 'Amsterdam',
   location: {
     latitude: 52.378,
@@ -8,3 +19,6 @@ export const AMSTERDAM: City = {
   },
   zoom: 12,
 };
+
+export const CITIES_LIST: City[] = [PARIS, AMSTERDAM, ];
+

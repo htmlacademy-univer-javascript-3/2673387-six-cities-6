@@ -6,4 +6,18 @@
   NotFound = '*'
 }
 
+export enum Cities {
+  Amsterdam = 'Amsterdam',
+  Brussels = 'Brussels',
+  Cologne = 'Cologne',
+  Dusseldorf = 'Dusseldorf',
+  Hamburg = 'Hamburg',
+  Paris = 'Paris'
+}
+
+
+export enum AuthStatus {
+  NotAuthorised = 'NotAuthorised',
+  Authorised = 'Authorised',
+}
 
