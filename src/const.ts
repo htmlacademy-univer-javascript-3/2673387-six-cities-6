@@ -21,3 +21,10 @@ export enum AuthStatus {
   Authorised = 'Authorised',
 }
 
+export enum SortOptions {
+  Popular = 'Popular',
+  PriceLowToHigh = 'PriceLowToHigh',
+  PriceHighToLow = 'PriceHighToLow',
+  TopRatedFirst = 'TopRatedFirst',
+}
+

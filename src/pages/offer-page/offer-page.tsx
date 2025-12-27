@@ -5,8 +5,9 @@ import OfferList from '../../components/offer-list/offer-list.tsx';
 import { MOCKED_REVIEWS } from '../../mocks/reviews.ts';
 import ReviewList from '../../components/review-list/review-list.tsx';
 import ReviewsForm from '../../components/reviews-form/reviews-form.tsx';
-import {AMSTERDAM} from '../../mocks/cities.ts';
 import Map from '../../components/map/map.tsx';
+import { useState } from 'react';
+import {CITIES_LIST} from '../../mocks/cities.ts';
 
 type OfferPageProps = {
   offers: Offer[];
@@ -14,18 +15,32 @@ type OfferPageProps = {
 
 function OfferPage({ offers }: OfferPageProps): JSX.Element {
   const { offerId } = useParams<{ offerId: string }>();
-  const currentOffer = offers.find((offer) => offer.id === offerId);
-  const nearbyOffers = offers.filter((offer) => offer.id !== offerId).slice(0, 3);
-  const nearbyOfferLocations = nearbyOffers.map((offer) => offer.location);
+  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
-  const reviews = MOCKED_REVIEWS
-    .filter((review) => review.offerId === offerId)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const handleCardHover = (id: string | null) => {
+    setActiveOfferId(id);
+  };
+
+  const currentOffer = offers.find((offer) => offer.id === offerId);
 
   if (!currentOffer) {
     return <NotFoundPage />;
   }
 
+  const nearbyOffers = offers
+    .filter((offer) => offer.city === currentOffer.city && offer.id !== currentOffer.id)
+    .slice(0, 3);
+
+  const nearbyOfferLocations = nearbyOffers.map((offer) => offer.location);
+
+  const activeOffer = nearbyOffers.find((offer) => offer.id === activeOfferId);
+  const activeLocation = activeOffer ? activeOffer.location : null;
+
+  const mapLocations = [...nearbyOfferLocations, currentOffer.location];
+
+  const reviews = MOCKED_REVIEWS
+    .filter((review) => review.offerId === offerId)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const {
     images,
@@ -40,6 +55,12 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
     goods,
     host,
   } = currentOffer;
+
+  const mapCity = CITIES_LIST.find((city) => city.name === currentOffer.city);
+
+  if (!mapCity) {
+    return <NotFoundPage />;
+  }
 
   return (
     <div className="page">
@@ -140,13 +161,13 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
             </div>
           </div>
           <section className="offer__map map">
-            <Map city={AMSTERDAM} locations={nearbyOfferLocations}/>
+            <Map city={mapCity} locations={mapLocations} activeLocation={activeLocation} />
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OfferList cardType={'near-places'} offers={nearbyOffers} />
+            <OfferList cardType={'near-places'} offers={nearbyOffers} onCardHover={handleCardHover} />
           </section>
         </div>
       </main>

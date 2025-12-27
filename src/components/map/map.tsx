@@ -8,18 +8,25 @@ import {Location} from '../../types/offer.ts';
 export type OffersMapProps = {
   city: City;
   locations: Location[];
+  activeLocation: Location | null;
 }
 
-function Map({city, locations}: OffersMapProps): JSX.Element {
+const pin = leaflet.icon({
+  iconUrl: 'markup/img/pin.svg',
+  iconSize: [38, 38],
+  iconAnchor: [20, 40],
+});
+
+const activePin = leaflet.icon({
+  iconUrl: 'markup/img/pin-active.svg',
+  iconSize: [38, 38],
+  iconAnchor: [20, 40],
+});
+
+function Map({city, locations, activeLocation}: OffersMapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
   const markerLayer = useRef(leaflet.layerGroup());
-
-  const customIcon = leaflet.icon({
-    iconUrl: 'markup/img/pin.svg',
-    iconSize: [38, 38],
-    iconAnchor: [20, 40],
-  });
 
   useEffect(() => {
     if (map) {
@@ -28,17 +35,27 @@ function Map({city, locations}: OffersMapProps): JSX.Element {
       markerLayer.current.clearLayers();
 
       locations.forEach((location) => {
+        const isActive =
+          activeLocation &&
+          location.latitude === activeLocation.latitude &&
+          location.longitude === activeLocation.longitude;
         leaflet
           .marker({
             lat: location.latitude,
             lng: location.longitude,
           },{
-            icon: customIcon
+            icon: isActive ? activePin : pin
           })
           .addTo(markerLayer.current);
       });
     }
-  }, [map, locations, customIcon]);
+  }, [map, locations, activeLocation]);
+
+  useEffect(() => {
+    if (map) {
+      map.setView([city.location.latitude, city.location.longitude], city.zoom);
+    }
+  }, [map, city]);
 
   return (
     <div

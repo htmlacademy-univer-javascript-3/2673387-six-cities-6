@@ -6,18 +6,28 @@ import {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {State} from '../../types/state.ts';
 import CityList from '../../components/city-list/city-list.tsx';
+import OfferSort from '../../components/offer-sort/offer-sort.tsx';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {changeSort} from '../../store/action.ts';
 type MainPageProps = {
   offers: Offer[];
 }
 
 function MainPage({offers} : MainPageProps): JSX.Element {
-  const [, setActiveOfferId] = useState<string | null>(null);
+  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
+  const activeSort = useAppSelector((state: State) => state.sortOptions);
   const handleCardHover = (offerId: string | null) => {
     setActiveOfferId(offerId);
   };
+
+
+  const dispatch = useAppDispatch();
   const cityName = useSelector((state: State) => state.city);
   const currentCity = CITIES_LIST.find((city) => city.name === cityName) ?? CITIES_LIST[0];
   const locations = offers.map((offer) => offer.location);
+
+  const activeOffer = offers.find((offer) => offer.id === activeOfferId);
+  const activeLocation = activeOffer ? activeOffer.location : null;
 
   return (
     <div className="page page--gray page--main">
@@ -62,26 +72,12 @@ function MainPage({offers} : MainPageProps): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offers.length} places to stay in {cityName}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
+              <OfferSort activeOption={activeSort} onSorterChange={(sorter) => dispatch(changeSort(sorter))} />
               <OfferList cardType={'cities'} offers={offers} onCardHover={handleCardHover} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={currentCity} locations={locations}/>
+                <Map city={currentCity} locations={locations} activeLocation={activeLocation}/>
               </section>
             </div>
           </div>

@@ -19,6 +19,9 @@ function OfferList({offers, cardType, onCardHover}: OfferListProps): JSX.Element
   const handleCardMouseEnter = (offerId: string) => {
     onCardHover?.(offerId);
   };
+  const handleCardLeave = () => {
+    onCardHover?.(null);
+  };
   return (
     <div className={listClassNames[cardType]}>
       {offers.map((offer) => (
@@ -26,6 +29,7 @@ function OfferList({offers, cardType, onCardHover}: OfferListProps): JSX.Element
           offer={offer}
           key={offer.id}
           onMouseEnter={handleCardMouseEnter}
+          onMouseLeave={handleCardLeave}
           cardType={cardType}
         />
       ))}

@@ -5,9 +5,10 @@ type OfferCardProps = {
   offer: Offer;
   cardType: string;
   onMouseEnter: (offerId: string) => void;
+  onMouseLeave: () => void;
 }
 
-function OfferCard({ offer, cardType, onMouseEnter }: OfferCardProps){
+function OfferCard({ offer, cardType, onMouseEnter, onMouseLeave }: OfferCardProps){
   const {
     id,
     isPremium,
@@ -26,6 +27,7 @@ function OfferCard({ offer, cardType, onMouseEnter }: OfferCardProps){
     <article
       className={`${cardType}__card place-card`}
       onMouseEnter={() => onMouseEnter(id)}
+      onMouseLeave={() => onMouseLeave()}
     >
       {isPremium && (
         <div className="place-card__mark">
