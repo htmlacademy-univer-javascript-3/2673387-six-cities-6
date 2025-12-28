@@ -1,9 +1,8 @@
 ﻿import {useRef, useEffect} from 'react';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import {City} from '../../types/city.ts';
 import useMap from '../../hooks/useMap.tsx';
-import {Location} from '../../types/offer.ts';
+import {City, Location} from '../../types/offer.ts';
 
 export type OffersMapProps = {
   city: City;
@@ -53,7 +52,7 @@ function Map({city, locations, activeLocation}: OffersMapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
-      map.setView([city.location.latitude, city.location.longitude], city.zoom);
+      map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
     }
   }, [map, city]);
 

@@ -1,7 +1,6 @@
 ﻿import {useAppDispatch, useAppSelector} from '../../hooks';
 import { changeCity } from '../../store/action';
-import type { City } from '../../types/city';
-import type { CityType } from '../../types/offer';
+import type {City, CityType} from '../../types/offer';
 
 type CitiesListProps = {
   cities: City[];
@@ -19,7 +18,7 @@ function CityList({ cities}: CitiesListProps): JSX.Element {
     <ul className="locations__list tabs__list">
       {cities.map((city) => (
         <li
-          key={`city-${city.id}`}
+          key={`city-${city.name}`}
           className="locations__item"
         >
           <a
