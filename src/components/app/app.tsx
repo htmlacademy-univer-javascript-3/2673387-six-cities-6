@@ -8,11 +8,22 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page.tsx';
 import PrivateRoute from '../private-route/private-route.tsx';
 import {State} from '../../types/state.ts';
 import {useSelector} from 'react-redux';
+import {useAppSelector} from '../../hooks';
+import LoadingScreen from '../loading-screen/loading-screen.tsx';
 
 function App(): JSX.Element {
   const city = useSelector((state: State) => state.city);
   const offers = useSelector((state: State) => state.offers);
-  const cityOffers = offers.filter((offer) => offer.city === city);
+  const cityOffers = offers.filter((offer) => offer.city.name === city);
+
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
+  if (isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
 
   return (
     <BrowserRouter>

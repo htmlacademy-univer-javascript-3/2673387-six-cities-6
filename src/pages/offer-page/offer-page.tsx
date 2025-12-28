@@ -6,8 +6,10 @@ import { MOCKED_REVIEWS } from '../../mocks/reviews.ts';
 import ReviewList from '../../components/review-list/review-list.tsx';
 import ReviewsForm from '../../components/reviews-form/reviews-form.tsx';
 import Map from '../../components/map/map.tsx';
-import { useState } from 'react';
-import {CITIES_LIST} from '../../mocks/cities.ts';
+import {useEffect, useState} from 'react';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {fetchOfferAction} from '../../store/api-action.ts';
+import LoadingScreen from '../../components/loading-screen/loading-screen.tsx';
 
 type OfferPageProps = {
   offers: Offer[];
@@ -17,18 +19,30 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
   const { offerId } = useParams<{ offerId: string }>();
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
-  const handleCardHover = (id: string | null) => {
-    setActiveOfferId(id);
-  };
+  const dispatch = useAppDispatch();
+  const currentOffer = useAppSelector((state) => state.currentOffer);
+  const isOfferLoading = useAppSelector((state) => state.isCurrentOfferLoading);
 
-  const currentOffer = offers.find((offer) => offer.id === offerId);
+  useEffect(() => {
+    if (offerId) {
+      dispatch(fetchOfferAction(offerId));
+    }
+  }, [dispatch, offerId]);
+
+  if (isOfferLoading) {
+    return <LoadingScreen />;
+  }
 
   if (!currentOffer) {
     return <NotFoundPage />;
   }
 
+  const handleCardHover = (id: string | null) => {
+    setActiveOfferId(id);
+  };
+
   const nearbyOffers = offers
-    .filter((offer) => offer.city === currentOffer.city && offer.id !== currentOffer.id)
+    .filter((offer) => offer.city.name === currentOffer.city.name && offer.id !== currentOffer.id)
     .slice(0, 3);
 
   const nearbyOfferLocations = nearbyOffers.map((offer) => offer.location);
@@ -42,21 +56,7 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
     .filter((review) => review.offerId === offerId)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  const {
-    images,
-    title,
-    description,
-    isPremium,
-    type,
-    rating,
-    bedrooms,
-    maxAdults,
-    price,
-    goods,
-    host,
-  } = currentOffer;
-
-  const mapCity = CITIES_LIST.find((city) => city.name === currentOffer.city);
+  const mapCity = currentOffer.city;
 
   if (!mapCity) {
     return <NotFoundPage />;
@@ -96,22 +96,22 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {images.slice(0, 6).map((imageSrc) => (
+              {currentOffer.images.slice(0, 6).map((imageSrc) => (
                 <div key={imageSrc} className="offer__image-wrapper">
-                  <img className="offer__image" src={imageSrc} alt={title} />
+                  <img className="offer__image" src={imageSrc} alt={currentOffer.title} />
                 </div>
               ))}
             </div>
           </div>
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {isPremium && (
+              {currentOffer.isPremium && (
                 <div className="offer__mark">
                   <span>Premium</span>
                 </div>
               )}
               <div className="offer__name-wrapper">
-                <h1 className="offer__name">{title}</h1>
+                <h1 className="offer__name">{currentOffer.title}</h1>
                 <button className="offer__bookmark-button button" type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
@@ -121,24 +121,24 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{ width: `${(rating / 5) * 100}%` }}></span>
+                  <span style={{ width: `${(currentOffer.rating / 5) * 100}%` }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="offer__rating-value rating__value">{rating}</span>
+                <span className="offer__rating-value rating__value">{currentOffer.rating}</span>
               </div>
               <ul className="offer__features">
-                <li className="offer__feature offer__feature--entire">{type}</li>
-                <li className="offer__feature offer__feature--bedrooms">{bedrooms} Bedrooms</li>
-                <li className="offer__feature offer__feature--adults">Max {maxAdults} adults</li>
+                <li className="offer__feature offer__feature--entire">{currentOffer.type}</li>
+                <li className="offer__feature offer__feature--bedrooms">{currentOffer.bedrooms} Bedrooms</li>
+                <li className="offer__feature offer__feature--adults">Max {currentOffer.maxAdults} adults</li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;{price}</b>
+                <b className="offer__price-value">&euro;{currentOffer.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {goods.map((good) => (
+                  {currentOffer.goods.map((good) => (
                     <li key={good} className="offer__inside-item">{good}</li>
                   ))}
                 </ul>
@@ -146,14 +146,14 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className={`offer__avatar-wrapper ${host.isPro ? 'offer__avatar-wrapper--pro' : ''} user__avatar-wrapper`}>
-                    <img className="offer__avatar user__avatar" src={host.avatarUrl} width="74" height="74" alt="Host avatar" />
+                  <div className={`offer__avatar-wrapper ${currentOffer.host.isPro ? 'offer__avatar-wrapper--pro' : ''} user__avatar-wrapper`}>
+                    <img className="offer__avatar user__avatar" src={currentOffer.host.avatarUrl} width="74" height="74" alt="Host avatar" />
                   </div>
-                  <span className="offer__user-name">{host.name}</span>
-                  {host.isPro && <span className="offer__user-status">Pro</span>}
+                  <span className="offer__user-name">{currentOffer.host.name}</span>
+                  {currentOffer.host.isPro && <span className="offer__user-status">Pro</span>}
                 </div>
                 <div className="offer__description">
-                  <p className="offer__text">{description}</p>
+                  <p className="offer__text">{currentOffer.description}</p>
                 </div>
               </div>
               <ReviewList reviews={reviews} />

@@ -1,6 +1,6 @@
 ﻿import {useEffect, useState, useRef, RefObject} from 'react';
 import leaflet from 'leaflet';
-import {City} from '../types/city.ts';
+import {City} from '../types/offer.ts';
 function useMap(mapRef: RefObject<HTMLElement>, city: City): leaflet.Map | null {
   const [map, setMap] = useState<leaflet.Map | null>(null);
   const isRenderedRef = useRef(false);
@@ -12,7 +12,7 @@ function useMap(mapRef: RefObject<HTMLElement>, city: City): leaflet.Map | null 
           lat: city.location.latitude,
           lng: city.location.longitude,
         },
-        zoom: city.zoom,
+        zoom: city.location.zoom,
       });
       leaflet
         .tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {

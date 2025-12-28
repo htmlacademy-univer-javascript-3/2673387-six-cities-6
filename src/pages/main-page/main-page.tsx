@@ -9,6 +9,7 @@ import CityList from '../../components/city-list/city-list.tsx';
 import OfferSort from '../../components/offer-sort/offer-sort.tsx';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {changeSort} from '../../store/action.ts';
+
 type MainPageProps = {
   offers: Offer[];
 }

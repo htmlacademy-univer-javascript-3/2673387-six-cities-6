@@ -1,8 +1,7 @@
 ﻿import { Link } from 'react-router-dom';
 import type {Offer} from '../../types/offer';
-import OfferList from '../../components/offer-list/offer-list'; // Импортируем готовый список
+import OfferList from '../../components/offer-list/offer-list';
 
-// 1. Упрощаем пропсы: странице нужен только список избранных предложений
 type FavoritesPageProps = {
   offers: Offer[];
 }
@@ -10,10 +9,10 @@ type FavoritesPageProps = {
 function FavoritesPage({ offers }: FavoritesPageProps): JSX.Element {
   const favoriteOffersByCity = offers.reduce<Record<string, Offer[]>>((acc, offer) => {
     const city = offer.city;
-    if (!acc[city]) {
-      acc[city] = [];
+    if (!acc[city.name]) {
+      acc[city.name] = [];
     }
-    acc[city].push(offer);
+    acc[city.name].push(offer);
     return acc;
   }, {});
 
