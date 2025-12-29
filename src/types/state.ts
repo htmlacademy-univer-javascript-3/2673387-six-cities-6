@@ -1,6 +1,6 @@
 ﻿import type {CityType, Offer, CurrentOffer} from './offer';
-import {store} from '../store';
-import {SortOptions} from '../const.ts';
+import {AuthStatus, SortOptions} from '../const.ts';
+import {UserData} from './auth-data.ts';
 
 export type InitialState = {
   city: CityType;
@@ -9,7 +9,8 @@ export type InitialState = {
   sortOptions: SortOptions;
   isOffersDataLoading: boolean;
   isCurrentOfferLoading: boolean;
+  authorizationStatus: AuthStatus;
+  user: UserData | null;
 };
 
-export type State = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+
