@@ -1,12 +1,8 @@
 ﻿import { createSlice } from '@reduxjs/toolkit';
 import { SliceType, AuthStatus } from '../../const';
-import { UserData } from '../../types/auth-data';
 import { checkAuthAction, loginAction, logoutAction } from '../api-action';
+import {UserState} from '../../types/state.ts';
 
-type UserState = {
-  authorizationStatus: AuthStatus;
-  user: UserData | null;
-};
 
 const initialState: UserState = {
   authorizationStatus: AuthStatus.NotAuthorised,

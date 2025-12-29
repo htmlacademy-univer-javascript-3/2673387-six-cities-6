@@ -12,9 +12,7 @@ import LoadingScreen from '../loading-screen/loading-screen.tsx';
 import { State } from '../../store';
 
 function App(): JSX.Element {
-  const city = useSelector((state: State) => state[SliceType.App].city);
   const offers = useSelector((state: State) => state[SliceType.Offers].offers);
-  const cityOffers = offers.filter((offer) => offer.city.name === city);
   const authStatus = useAppSelector((state: State) => state[SliceType.User].authorizationStatus);
 
   const isOffersDataLoading = useAppSelector((state) => state[SliceType.Offers].isOffersDataLoading);
@@ -31,7 +29,7 @@ function App(): JSX.Element {
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainPage offers={cityOffers} />}
+          element={<MainPage />}
         />
         <Route
           path={AppRoute.Login}

@@ -1,19 +1,27 @@
-﻿import type {CityType, Offer, CurrentOffer} from './offer';
+﻿import {CityType, CurrentOffer, Offer} from './offer.ts';
 import {AuthStatus, SortOptions} from '../const.ts';
-import {UserData} from './auth-data.ts';
 import Review from './review.ts';
+import {UserData} from './auth-data.ts';
 
-export type InitialState = {
+export type AppState = {
   city: CityType;
-  offers: Offer[];
-  currentOffer: CurrentOffer | null;
   sortOptions: SortOptions;
+};
+
+export type OffersState = {
+  offers: Offer[];
   isOffersDataLoading: boolean;
+  currentOffer: CurrentOffer | null;
   isCurrentOfferLoading: boolean;
-  authorizationStatus: AuthStatus;
-  user: UserData | null;
   reviews: Review[];
   nearbyOffers: Offer[];
+  favoriteOffers: Offer[];
+  isFavoritesLoading: boolean;
+};
+
+export type UserState = {
+  authorizationStatus: AuthStatus;
+  user: UserData | null;
 };
 
 

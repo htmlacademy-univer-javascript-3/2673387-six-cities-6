@@ -2,15 +2,15 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppRoute, AuthStatus } from '../../const';
-import { getAuthorizationStatus, getUser } from '../../store/selectors';
-import {logoutAction} from '../../store/api-action.ts';
+import { getAuthorizationStatus, getFavoriteOffers, getUser } from '../../store/selectors';
+import { logoutAction } from '../../store/api-action';
 
 function HeaderInner(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  // Используем селекторы
   const user = useAppSelector(getUser);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
 
   const handleSignOut = useCallback((evt: React.MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
@@ -36,7 +36,10 @@ function HeaderInner(): JSX.Element {
                         <img src={user?.avatarUrl} alt="User avatar" style={{ borderRadius: '50%' }} />
                       </div>
                       <span className="header__user-name user__name">{user?.email}</span>
-                      <span className="header__favorite-count">3</span>
+
+                      {/* ВЫВОДИМ ДЛИНУ МАССИВА */}
+                      <span className="header__favorite-count">{favoriteOffers.length}</span>
+
                     </Link>
                   </li>
                   <li className="header__nav-item">

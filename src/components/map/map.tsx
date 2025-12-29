@@ -56,7 +56,7 @@ function MapInner({ city, locations, activeLocation, className }: OffersMapProps
       map.flyTo(
         [city.location.latitude, city.location.longitude],
         city.location.zoom,
-        { duration: 2 } // Длительность полета в секундах
+        { duration: 1 }
       );
     }
   }, [map, city]);

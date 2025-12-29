@@ -5,6 +5,31 @@ import { Review, ReviewRequest } from '../types/review';
 import { AuthData, UserData } from '../types/auth-data';
 import {AppDispatch, State} from './index.ts';
 import {dropToken, saveToken} from '../api/token.ts';
+import {FavoriteStatusRequest} from '../types/favorite.ts';
+
+export const fetchFavoritesAction = createAsyncThunk<Offer[], undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchFavorites',
+  async (_arg, { extra: api }) => {
+    const { data } = await api.get<Offer[]>('/favorite');
+    return data;
+  },
+);
+
+export const setFavoriteAction = createAsyncThunk<Offer, FavoriteStatusRequest, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/setFavorite',
+  async ({ offerId, status }, { extra: api }) => {
+    const { data } = await api.post<Offer>(`/favorite/${offerId}/${status}`);
+    return data;
+  },
+);
 
 export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
@@ -60,8 +85,9 @@ export const checkAuthAction = createAsyncThunk<UserData, undefined, {
   extra: AxiosInstance;
 }>(
   'user/checkAuth',
-  async (_arg, { extra: api }) => {
+  async (_arg, { dispatch, extra: api }) => {
     const { data } = await api.get<UserData>('/login');
+    dispatch(fetchFavoritesAction());
     return data;
   },
 );

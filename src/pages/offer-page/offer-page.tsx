@@ -1,21 +1,27 @@
-﻿import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+﻿import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
 import NotFoundPage from '../not-found-page/not-found-page';
 import OfferList from '../../components/offer-list/offer-list';
 import ReviewList from '../../components/review-list/review-list';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import Map from '../../components/map/map';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
+import Header from '../../components/header/header';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import {AuthStatus, SliceType} from '../../const';
-import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from '../../store/api-action';
-import Header from '../../components/header/header.tsx';
+import { AuthStatus, SliceType, AppRoute } from '../../const';
+import {
+  fetchNearbyOffersAction,
+  fetchOfferAction,
+  fetchReviewsAction,
+  setFavoriteAction
+} from '../../store/api-action';
 
 function OfferPage(): JSX.Element {
   const { offerId } = useParams<{ offerId: string }>();
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const currentOffer = useAppSelector((state) => state[SliceType.Offers].currentOffer);
   const reviews = useAppSelector((state) => state[SliceType.Offers].reviews);
@@ -31,6 +37,25 @@ function OfferPage(): JSX.Element {
     }
   }, [dispatch, offerId]);
 
+
+  const handleCardHover = useCallback((id: string | null) => {
+    setActiveOfferId(id);
+  }, []);
+
+  const handleFavoriteClick = () => {
+    if (authorizationStatus !== AuthStatus.Authorised) {
+      navigate(AppRoute.Login);
+      return;
+    }
+
+    if (currentOffer) {
+      dispatch(setFavoriteAction({
+        offerId: currentOffer.id,
+        status: currentOffer.isFavorite ? 0 : 1
+      }));
+    }
+  };
+
   if (isOfferLoading) {
     return <LoadingScreen />;
   }
@@ -39,12 +64,7 @@ function OfferPage(): JSX.Element {
     return <NotFoundPage />;
   }
 
-  const handleCardHover = (id: string | null) => {
-    setActiveOfferId(id);
-  };
-
   const nearbyOffersToRender = nearbyOffers.slice(0, 3);
-
   const nearbyOfferLocations = nearbyOffersToRender.map((offer) => offer.location);
   const activeOffer = nearbyOffersToRender.find((offer) => offer.id === activeOfferId);
   const activeLocation = activeOffer ? activeOffer.location : null;
@@ -80,11 +100,18 @@ function OfferPage(): JSX.Element {
 
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{currentOffer.title}</h1>
-                <button className="offer__bookmark-button button" type="button">
+
+                <button
+                  className={`offer__bookmark-button button ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : ''}`}
+                  type="button"
+                  onClick={handleFavoriteClick}
+                >
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
-                  <span className="visually-hidden">To bookmarks</span>
+                  <span className="visually-hidden">
+                    {currentOffer.isFavorite ? 'In bookmarks' : 'To bookmarks'}
+                  </span>
                 </button>
               </div>
 
@@ -138,13 +165,23 @@ function OfferPage(): JSX.Element {
               {authorizationStatus === AuthStatus.Authorised && <ReviewsForm />}
             </div>
           </div>
-          <Map city={mapCity} locations={mapLocations} activeLocation={activeLocation} className="offer__map" />
+
+          <Map
+            className="offer__map"
+            city={mapCity}
+            locations={mapLocations}
+            activeLocation={activeLocation}
+          />
         </section>
 
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OfferList cardType={'near-places'} offers={nearbyOffersToRender} onCardHover={handleCardHover} />
+            <OfferList
+              cardType={'near-places'}
+              offers={nearbyOffersToRender}
+              onCardHover={handleCardHover}
+            />
           </section>
         </div>
       </main>

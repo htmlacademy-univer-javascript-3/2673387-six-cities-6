@@ -1,11 +1,8 @@
 ﻿import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SliceType, Cities, SortOptions } from '../../const';
 import { CityType } from '../../types/offer';
+import {AppState} from '../../types/state.ts';
 
-type AppState = {
-  city: CityType;
-  sortOptions: SortOptions;
-};
 
 const initialState: AppState = {
   city: Cities.Paris,
