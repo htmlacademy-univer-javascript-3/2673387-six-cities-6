@@ -10,7 +10,7 @@ import Map from '../../components/map/map';
 import CityList from '../../components/city-list/city-list';
 import OfferSort from '../../components/offer-sort/offer-sort';
 import {CityType} from '../../types/offer.ts';
-import MainEmpty from '../main-empty-page/main-empty-page.tsx';
+import MainEmpty from '../../components/main-empty/main-empty.tsx';
 
 function MainPage(): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);

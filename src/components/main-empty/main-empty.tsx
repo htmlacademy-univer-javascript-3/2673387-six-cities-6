@@ -1,5 +1,5 @@
 ﻿import { memo } from 'react';
-import { CityType } from '../../types/offer';
+import { CityType } from '../../types/offer.ts';
 
 type MainEmptyProps = {
   city: CityType;
