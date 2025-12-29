@@ -2,7 +2,7 @@ import OfferList from '../../components/offer-list/offer-list.tsx';
 import {Offer} from '../../types/offer.ts';
 import Map from '../../components/map/map.jsx';
 import {CITIES_LIST} from '../../mocks/cities.ts';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import CityList from '../../components/city-list/city-list.tsx';
 import OfferSort from '../../components/offer-sort/offer-sort.tsx';
 import {useAppDispatch, useAppSelector} from '../../hooks';
@@ -10,6 +10,7 @@ import {changeSort} from '../../store/action.ts';
 import {Link} from 'react-router-dom';
 import {AppRoute, AuthStatus} from '../../const.ts';
 import { logoutAction } from '../../store/api-action.ts';
+import {sortOffers} from '../../store/utils.ts';
 
 type MainPageProps = {
   offers: Offer[];
@@ -20,6 +21,7 @@ function MainPage({offers} : MainPageProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const activeSort = useAppSelector((state) => state.sortOptions);
+  const sortedOffers = sortOffers(offers, activeSort);
   const cityName = useAppSelector((state) => state.city);
   const user = useAppSelector((state) => state.user);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
@@ -94,8 +96,15 @@ function MainPage({offers} : MainPageProps): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{offers.length} places to stay in {cityName}</b>
-              <OfferSort activeOption={activeSort} onSorterChange={(sorter) => dispatch(changeSort(sorter))} />
-              <OfferList cardType={'cities'} offers={offers} onCardHover={handleCardHover} />
+              <OfferSort
+                activeOption={activeSort}
+                onSorterChange={(sorter) => dispatch(changeSort(sorter))}
+              />
+              <OfferList
+                cardType={'cities'}
+                offers={sortedOffers}
+                onCardHover={handleCardHover}
+              />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">

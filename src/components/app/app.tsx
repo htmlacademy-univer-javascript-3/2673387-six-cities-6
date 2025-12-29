@@ -35,7 +35,7 @@ function App(): JSX.Element {
         />
         <Route
           path={AppRoute.Login}
-          element={<LoginPage/>}
+          element={<LoginPage />}
         />
         <Route
           path={AppRoute.Favorites}
@@ -47,11 +47,11 @@ function App(): JSX.Element {
         />
         <Route
           path={`${AppRoute.Offer}/:offerId`}
-          element={<OfferPage offers={offers}/>}
+          element={<OfferPage />}
         />
         <Route
           path={AppRoute.NotFound}
-          element={<NotFoundPage/>}
+          element={<NotFoundPage />}
         />
       </Routes>
     </BrowserRouter>

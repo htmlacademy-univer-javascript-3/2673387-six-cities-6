@@ -2,11 +2,11 @@
 import {
   changeCity,
   changeSort,
-  setAuthorizationStatus,
+  setAuthorizationStatus, setNearbyOffers,
   setOffer,
   setOfferLoading,
   setOffers,
-  setOffersDataLoading,
+  setOffersDataLoading, setReviews,
   setUser
 } from './action';
 import type {InitialState} from '../types/state';
@@ -22,6 +22,8 @@ const initialState: InitialState = {
   isCurrentOfferLoading: false,
   authorizationStatus: AuthStatus.NotAuthorised,
   user: null,
+  reviews: [],
+  nearbyOffers: []
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -49,5 +51,11 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setUser, (state, action) => {
       state.user = action.payload;
+    })
+    .addCase(setReviews, (state, { payload }) => {
+      state.reviews = payload;
+    })
+    .addCase(setNearbyOffers, (state, { payload }) => {
+      state.nearbyOffers = payload;
     });
 });
