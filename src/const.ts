@@ -23,8 +23,8 @@ export enum AuthStatus {
 
 export enum SortOptions {
   Popular = 'Popular',
-  PriceLowToHigh = 'PriceLowToHigh',
-  PriceHighToLow = 'PriceHighToLow',
-  TopRatedFirst = 'TopRatedFirst',
+  PriceLowToHigh = 'Price Low To High',
+  PriceHighToLow = 'Price High To Low',
+  TopRatedFirst = 'Top Rated First',
 }
 

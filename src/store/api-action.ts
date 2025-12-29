@@ -1,11 +1,20 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AxiosInstance} from 'axios';
 import {CurrentOffer, Offer} from '../types/offer';
-import {setAuthorizationStatus, setOffer, setOfferLoading, setOffers, setOffersDataLoading, setUser} from './action';
+import {
+  setAuthorizationStatus, setNearbyOffers,
+  setOffer,
+  setOfferLoading,
+  setOffers,
+  setOffersDataLoading,
+  setReviews,
+  setUser
+} from './action';
 import {dropToken, saveToken} from '../api/token.ts';
 import {AuthData, UserData} from '../types/auth-data.ts';
 import {AppDispatch, State} from './index.ts';
 import {AuthStatus} from '../const.ts';
+import Review, {ReviewRequest} from '../types/review.ts';
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -97,5 +106,41 @@ export const logoutAction = createAsyncThunk<void, undefined, {
 
     dispatch(setAuthorizationStatus(AuthStatus.NotAuthorised));
     dispatch(setUser(null));
+  },
+);
+
+export const fetchReviewsAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'offer/fetchReviews',
+  async (offerId, { dispatch, extra: api }) => {
+    const { data } = await api.get<Review[]>(`/comments/${offerId}`);
+    dispatch(setReviews(data));
+  },
+);
+
+export const fetchNearbyOffersAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'offer/fetchNearbyOffers',
+  async (offerId, { dispatch, extra: api }) => {
+    const { data } = await api.get<Offer[]>(`/offers/${offerId}/nearby`);
+    dispatch(setNearbyOffers(data));
+  },
+);
+
+export const postCommentAction = createAsyncThunk<void, ReviewRequest, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/postComment',
+  async ({ offerId, comment, rating }, { dispatch, extra: api }) => {
+    await api.post(`/comments/${offerId}`, { comment, rating });
+    dispatch(fetchReviewsAction(offerId));
   },
 );

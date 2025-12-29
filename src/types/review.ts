@@ -1,15 +1,17 @@
-﻿type User = {
-  name: string;
-  avatarUrl: string;
+﻿import {Host} from './offer.ts';
+
+export type Review = {
+  id: string;
+  date: string;
+  user: Host;
+  comment: string;
+  rating: number;
 };
 
-type Review = {
-  id: string;
+export type ReviewRequest = {
   offerId: string;
-  user: User;
-  rating: number;
   comment: string;
-  date: string;
+  rating: number;
 };
 
 export default Review;

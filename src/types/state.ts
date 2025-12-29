@@ -1,6 +1,7 @@
 ﻿import type {CityType, Offer, CurrentOffer} from './offer';
 import {AuthStatus, SortOptions} from '../const.ts';
 import {UserData} from './auth-data.ts';
+import Review from './review.ts';
 
 export type InitialState = {
   city: CityType;
@@ -11,6 +12,8 @@ export type InitialState = {
   isCurrentOfferLoading: boolean;
   authorizationStatus: AuthStatus;
   user: UserData | null;
+  reviews: Review[];
+  nearbyOffers: Offer[];
 };
 
 

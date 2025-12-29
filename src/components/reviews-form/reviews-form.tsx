@@ -1,4 +1,7 @@
 ﻿import { useState, ChangeEvent, FormEvent, Fragment } from 'react';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
+import {postCommentAction} from '../../store/api-action.ts';
 
 const MIN_REVIEW_LENGTH = 50;
 const MAX_REVIEW_LENGTH = 300;
@@ -12,10 +15,15 @@ const RATING_TITLES: { [key: number]: string } = {
 };
 
 function ReviewsForm(): JSX.Element {
+  const { offerId } = useParams<{ offerId: string }>();
+  const dispatch = useAppDispatch();
+
   const [formData, setFormData] = useState({
     rating: 0,
     review: '',
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFieldChange = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = evt.target;
@@ -33,12 +41,26 @@ function ReviewsForm(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (isFormValid) {
-      // eslint-disable-next-line no-console
-      console.log('Form submitted:', formData);
-
-      setFormData({ rating: 0, review: '' });
+    if (!isFormValid || isSubmitting || !offerId) {
+      return;
     }
+
+    setIsSubmitting(true);
+
+    dispatch(postCommentAction({
+      offerId,
+      comment: formData.review,
+      rating: formData.rating
+    }))
+      .unwrap()
+      .then(() => {
+        setFormData({ rating: 0, review: '' });
+      })
+      .catch(() => {
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   return (
@@ -55,8 +77,13 @@ function ReviewsForm(): JSX.Element {
               type="radio"
               checked={formData.rating === starValue}
               onChange={handleFieldChange}
+              disabled={isSubmitting}
             />
-            <label htmlFor={`${starValue}-stars`} className="reviews__rating-label form__rating-label" title={RATING_TITLES[starValue]}>
+            <label
+              htmlFor={`${starValue}-stars`}
+              className="reviews__rating-label form__rating-label"
+              title={RATING_TITLES[starValue]}
+            >
               <svg className="form__star-image" width="37" height="33">
                 <use xlinkHref="#icon-star"></use>
               </svg>
@@ -64,6 +91,7 @@ function ReviewsForm(): JSX.Element {
           </Fragment>
         ))}
       </div>
+
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
@@ -72,14 +100,22 @@ function ReviewsForm(): JSX.Element {
         value={formData.review}
         onChange={handleFieldChange}
         maxLength={MAX_REVIEW_LENGTH}
+        disabled={isSubmitting}
       >
       </textarea>
+
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay
           with at least <b className="reviews__text-amount">{MIN_REVIEW_LENGTH} characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={!isFormValid}>Submit</button>
+        <button
+          className="reviews__submit form__submit button"
+          type="submit"
+          disabled={!isFormValid || isSubmitting}
+        >
+          {isSubmitting ? 'Submitting...' : 'Submit'}
+        </button>
       </div>
     </form>
   );
