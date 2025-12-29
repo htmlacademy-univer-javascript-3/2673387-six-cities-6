@@ -1,7 +1,7 @@
 ﻿import {FormEvent, useEffect, useRef} from 'react';
 import {Link, useNavigate} from 'react-router-dom'; // Импортируем хуки роутера
 import {useAppDispatch, useAppSelector} from '../../hooks'; // Ваши хуки
-import {AppRoute, AuthStatus} from '../../const'; // Пути
+import {AppRoute, AuthStatus, SliceType} from '../../const'; // Пути
 import {loginAction} from '../../store/api-action';
 
 function LoginPage(): JSX.Element {
@@ -11,7 +11,7 @@ function LoginPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector((state) => state[SliceType.User].authorizationStatus);
 
   useEffect(() => {
     if (authorizationStatus === AuthStatus.Authorised) {

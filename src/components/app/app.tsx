@@ -1,6 +1,6 @@
 import MainPage from '../../pages/main-page/main-page.tsx';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import {AppRoute} from '../../const.ts';
+import {AppRoute, SliceType} from '../../const.ts';
 import LoginPage from '../../pages/login-page/login-page.tsx';
 import FavoritesPage from '../../pages/favorites-page/favorites-page.tsx';
 import OfferPage from '../../pages/offer-page/offer-page.tsx';
@@ -12,12 +12,12 @@ import LoadingScreen from '../loading-screen/loading-screen.tsx';
 import { State } from '../../store';
 
 function App(): JSX.Element {
-  const city = useSelector((state: State) => state.city);
-  const offers = useSelector((state: State) => state.offers);
+  const city = useSelector((state: State) => state[SliceType.App].city);
+  const offers = useSelector((state: State) => state[SliceType.Offers].offers);
   const cityOffers = offers.filter((offer) => offer.city.name === city);
-  const authStatus = useAppSelector((state: State) => state.authorizationStatus);
+  const authStatus = useAppSelector((state: State) => state[SliceType.User].authorizationStatus);
 
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const isOffersDataLoading = useAppSelector((state) => state[SliceType.Offers].isOffersDataLoading);
 
   if (isOffersDataLoading) {
     return (
