@@ -21,6 +21,7 @@ export enum Cities {
 export enum AuthStatus {
   NotAuthorised = 'NotAuthorised',
   Authorised = 'Authorised',
+  Unknown = 'Unknown'
 }
 
 export enum SortOptions {

@@ -66,8 +66,8 @@ function OfferPage(): JSX.Element {
 
   const nearbyOffersToRender = nearbyOffers.slice(0, 3);
   const nearbyOfferLocations = nearbyOffersToRender.map((offer) => offer.location);
-  const activeOffer = nearbyOffersToRender.find((offer) => offer.id === activeOfferId);
-  const activeLocation = activeOffer ? activeOffer.location : null;
+  const activeNearbyOffer = nearbyOffersToRender.find((offer) => offer.id === activeOfferId);
+  const activeLocation = activeNearbyOffer ? activeNearbyOffer.location : currentOffer.location;
   const mapLocations = [...nearbyOfferLocations, currentOffer.location];
   const mapCity = currentOffer.city;
 
@@ -124,13 +124,20 @@ function OfferPage(): JSX.Element {
               </div>
 
               <ul className="offer__features">
-                <li
-                  className="offer__feature offer__feature--entire"
-                  style={{ textTransform: 'capitalize' }}
-                >{currentOffer.type}
-                </li>
-                <li className="offer__feature offer__feature--bedrooms">{currentOffer.bedrooms} Bedrooms</li>
-                <li className="offer__feature offer__feature--adults">Max {currentOffer.maxAdults} adults</li>
+                <ul className="offer__features">
+                  <li
+                    className="offer__feature offer__feature--entire"
+                    style={{ textTransform: 'capitalize' }}
+                  >
+                    {currentOffer.type}
+                  </li>
+                  <li className="offer__feature offer__feature--bedrooms">
+                    {currentOffer.bedrooms} Bedroom{currentOffer.bedrooms > 1 ? 's' : ''}
+                  </li>
+                  <li className="offer__feature offer__feature--adults">
+                    Max {currentOffer.maxAdults} adult{currentOffer.maxAdults > 1 ? 's' : ''}
+                  </li>
+                </ul>
               </ul>
 
               <div className="offer__price">

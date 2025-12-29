@@ -6,7 +6,7 @@ import Header from '../../components/header/header';
 import OfferList from '../../components/offer-list/offer-list';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import {fetchFavoritesAction} from '../../store/api-action.ts';
-import FavoritesEmptyPage from '../favorites-empty-page/favorites-empty-page.tsx';
+import FavoritesEmptyPage from '../../components/favorites-empty/favorites-empty.tsx';
 
 function FavoritesPage(): JSX.Element {
   const dispatch = useAppDispatch();
