@@ -1,28 +1,29 @@
-﻿import {useRef, useEffect} from 'react';
+﻿import { useRef, useEffect, memo } from 'react';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import useMap from '../../hooks/useMap.tsx';
-import {City, Location} from '../../types/offer.ts';
+import useMap from '../../hooks/useMap';
+import { City, Location } from '../../types/offer';
 
 export type OffersMapProps = {
   city: City;
   locations: Location[];
   activeLocation: Location | null;
-}
+  className: string;
+};
 
 const pin = leaflet.icon({
-  iconUrl: 'markup/img/pin.svg',
-  iconSize: [38, 38],
-  iconAnchor: [20, 40],
+  iconUrl: '/img/pin.svg',
+  iconSize: [27, 39],
+  iconAnchor: [13, 39],
 });
 
 const activePin = leaflet.icon({
-  iconUrl: 'markup/img/pin-active.svg',
-  iconSize: [38, 38],
-  iconAnchor: [20, 40],
+  iconUrl: '/img/pin-active.svg',
+  iconSize: [27, 39],
+  iconAnchor: [13, 39],
 });
 
-function Map({city, locations, activeLocation}: OffersMapProps): JSX.Element {
+function MapInner({ city, locations, activeLocation, className }: OffersMapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
   const markerLayer = useRef(leaflet.layerGroup());
@@ -30,7 +31,6 @@ function Map({city, locations, activeLocation}: OffersMapProps): JSX.Element {
   useEffect(() => {
     if (map) {
       map.addLayer(markerLayer.current);
-
       markerLayer.current.clearLayers();
 
       locations.forEach((location) => {
@@ -38,11 +38,12 @@ function Map({city, locations, activeLocation}: OffersMapProps): JSX.Element {
           activeLocation &&
           location.latitude === activeLocation.latitude &&
           location.longitude === activeLocation.longitude;
+
         leaflet
           .marker({
             lat: location.latitude,
             lng: location.longitude,
-          },{
+          }, {
             icon: isActive ? activePin : pin
           })
           .addTo(markerLayer.current);
@@ -52,17 +53,23 @@ function Map({city, locations, activeLocation}: OffersMapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
-      map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
+      map.flyTo(
+        [city.location.latitude, city.location.longitude],
+        city.location.zoom,
+        { duration: 2 } // Длительность полета в секундах
+      );
     }
   }, [map, city]);
 
   return (
-    <div
-      style={{height: '100%'}}
+    <section
+      className={`${className} map`}
       ref={mapRef}
     >
-    </div>
+    </section>
   );
 }
+
+const Map = memo(MapInner);
 
 export default Map;

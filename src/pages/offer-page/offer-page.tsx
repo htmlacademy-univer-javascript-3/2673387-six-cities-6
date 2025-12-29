@@ -1,5 +1,5 @@
-﻿import { Link, useParams } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+﻿import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import NotFoundPage from '../not-found-page/not-found-page';
 import OfferList from '../../components/offer-list/offer-list';
 import ReviewList from '../../components/review-list/review-list';
@@ -7,8 +7,9 @@ import ReviewsForm from '../../components/reviews-form/reviews-form';
 import Map from '../../components/map/map';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { AppRoute, AuthStatus } from '../../const';
-import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction, logoutAction } from '../../store/api-action';
+import {AuthStatus, SliceType} from '../../const';
+import { fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction } from '../../store/api-action';
+import Header from '../../components/header/header.tsx';
 
 function OfferPage(): JSX.Element {
   const { offerId } = useParams<{ offerId: string }>();
@@ -16,12 +17,11 @@ function OfferPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const currentOffer = useAppSelector((state) => state.currentOffer);
-  const reviews = useAppSelector((state) => state.reviews);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
-  const isOfferLoading = useAppSelector((state) => state.isCurrentOfferLoading);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const user = useAppSelector((state) => state.user);
+  const currentOffer = useAppSelector((state) => state[SliceType.Offers].currentOffer);
+  const reviews = useAppSelector((state) => state[SliceType.Offers].reviews);
+  const nearbyOffers = useAppSelector((state) => state[SliceType.Offers].nearbyOffers);
+  const isOfferLoading = useAppSelector((state) => state[SliceType.Offers].isCurrentOfferLoading);
+  const authorizationStatus = useAppSelector((state) => state[SliceType.User].authorizationStatus);
 
   useEffect(() => {
     if (offerId) {
@@ -43,11 +43,6 @@ function OfferPage(): JSX.Element {
     setActiveOfferId(id);
   };
 
-  const handleSignOut = (evt: React.MouseEvent<HTMLAnchorElement>) => {
-    evt.preventDefault();
-    dispatch(logoutAction());
-  };
-
   const nearbyOffersToRender = nearbyOffers.slice(0, 3);
 
   const nearbyOfferLocations = nearbyOffersToRender.map((offer) => offer.location);
@@ -62,47 +57,7 @@ function OfferPage(): JSX.Element {
 
   return (
     <div className="page">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Link className="header__logo-link" to={AppRoute.Main}>
-                <img className="header__logo" src="/img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </Link>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                {authorizationStatus === AuthStatus.Authorised ? (
-                  <>
-                    <li className="header__nav-item user">
-                      <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
-                        <div className="header__avatar-wrapper user__avatar-wrapper">
-                          <img src={user?.avatarUrl} alt="User avatar" style={{ borderRadius: '50%' }} />
-                        </div>
-                        <span className="header__user-name user__name">{user?.email}</span>
-                        <span className="header__favorite-count">3</span>
-                      </Link>
-                    </li>
-                    <li className="header__nav-item">
-                      <a className="header__nav-link" href="#" onClick={handleSignOut}>
-                        <span className="header__signout">Sign out</span>
-                      </a>
-                    </li>
-                  </>
-                ) : (
-                  <li className="header__nav-item user">
-                    <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
-                      <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                      <span className="header__login">Sign in</span>
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+      <Header />
       <main className="page__main page__main--offer">
         <section className="offer">
           <div className="offer__gallery-container container">
@@ -142,7 +97,11 @@ function OfferPage(): JSX.Element {
               </div>
 
               <ul className="offer__features">
-                <li className="offer__feature offer__feature--entire">{currentOffer.type}</li>
+                <li
+                  className="offer__feature offer__feature--entire"
+                  style={{ textTransform: 'capitalize' }}
+                >{currentOffer.type}
+                </li>
                 <li className="offer__feature offer__feature--bedrooms">{currentOffer.bedrooms} Bedrooms</li>
                 <li className="offer__feature offer__feature--adults">Max {currentOffer.maxAdults} adults</li>
               </ul>
@@ -179,10 +138,7 @@ function OfferPage(): JSX.Element {
               {authorizationStatus === AuthStatus.Authorised && <ReviewsForm />}
             </div>
           </div>
-
-          <section className="offer__map map">
-            <Map city={mapCity} locations={mapLocations} activeLocation={activeLocation} />
-          </section>
+          <Map city={mapCity} locations={mapLocations} activeLocation={activeLocation} className="offer__map" />
         </section>
 
         <div className="container">

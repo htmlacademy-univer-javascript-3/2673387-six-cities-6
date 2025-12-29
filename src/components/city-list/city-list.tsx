@@ -1,19 +1,13 @@
-﻿import {useAppDispatch, useAppSelector} from '../../hooks';
-import { changeCity } from '../../store/action';
-import type {City, CityType} from '../../types/offer';
+﻿import { memo } from 'react';
+import type { City, CityType } from '../../types/offer';
 
-type CitiesListProps = {
+type CityListProps = {
   cities: City[];
+  activeCity: CityType;
+  onChange: (city: CityType) => void;
 };
 
-function CityList({ cities}: CitiesListProps): JSX.Element {
-  const dispatch = useAppDispatch();
-  const activeCity = useAppSelector((state) => state.city);
-
-  const handleCityClick = (city: CityType) => {
-    dispatch(changeCity(city));
-  };
-
+function CityListInner({ cities, activeCity, onChange }: CityListProps): JSX.Element {
   return (
     <ul className="locations__list tabs__list">
       {cities.map((city) => (
@@ -29,7 +23,7 @@ function CityList({ cities}: CitiesListProps): JSX.Element {
             }
             onClick={(evt) => {
               evt.preventDefault();
-              handleCityClick(city.name);
+              onChange(city.name);
             }}
           >
             <span>{city.name}</span>
@@ -39,5 +33,7 @@ function CityList({ cities}: CitiesListProps): JSX.Element {
     </ul>
   );
 }
+
+const CityList = memo(CityListInner);
 
 export default CityList;
