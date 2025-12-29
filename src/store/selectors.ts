@@ -8,6 +8,7 @@ export const getCity = (state: State) => state[SliceType.App].city;
 export const getSortOption = (state: State) => state[SliceType.App].sortOptions;
 export const getAuthorizationStatus = (state: State) => state[SliceType.User].authorizationStatus;
 export const getUser = (state: State) => state[SliceType.User].user;
+export const getFavoriteOffers = (state: State) => state[SliceType.Offers].favoriteOffers;
 
 export const getFilteredSortedOffers = createSelector(
   [getOffers, getCity, getSortOption],

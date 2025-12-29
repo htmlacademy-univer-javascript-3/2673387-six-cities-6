@@ -1,7 +1,7 @@
 ﻿import {FormEvent, useEffect, useRef} from 'react';
-import {Link, useNavigate} from 'react-router-dom'; // Импортируем хуки роутера
-import {useAppDispatch, useAppSelector} from '../../hooks'; // Ваши хуки
-import {AppRoute, AuthStatus, SliceType} from '../../const'; // Пути
+import {Link, useNavigate} from 'react-router-dom';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {AppRoute, AuthStatus, SliceType} from '../../const';
 import {loginAction} from '../../store/api-action';
 
 function LoginPage(): JSX.Element {
