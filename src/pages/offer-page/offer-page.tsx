@@ -124,11 +124,6 @@ function OfferPage(): JSX.Element {
               </div>
 
               <ul className="offer__features">
-                <li
-                  className="offer__feature offer__feature--entire"
-                  style={{ textTransform: 'capitalize' }}
-                >{currentOffer.type}
-                </li>
                 <ul className="offer__features">
                   <li
                     className="offer__feature offer__feature--entire"

@@ -37,7 +37,6 @@ function HeaderInner(): JSX.Element {
                       </div>
                       <span className="header__user-name user__name">{user?.email}</span>
 
-                      {/* ВЫВОДИМ ДЛИНУ МАССИВА */}
                       <span className="header__favorite-count">{favoriteOffers.length}</span>
 
                     </Link>

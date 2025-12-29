@@ -88,7 +88,6 @@ function LoginPage(): JSX.Element {
             </form>
           </section>
 
-          {/* Секция со случайным городом */}
           <section className="locations locations--login locations--current">
             <div className="locations__item">
               <Link
