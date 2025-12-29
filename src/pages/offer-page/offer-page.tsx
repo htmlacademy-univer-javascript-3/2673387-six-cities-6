@@ -138,10 +138,7 @@ function OfferPage(): JSX.Element {
               {authorizationStatus === AuthStatus.Authorised && <ReviewsForm />}
             </div>
           </div>
-
-          <section className="offer__map map">
-            <Map city={mapCity} locations={mapLocations} activeLocation={activeLocation} />
-          </section>
+          <Map city={mapCity} locations={mapLocations} activeLocation={activeLocation} className="offer__map" />
         </section>
 
         <div className="container">

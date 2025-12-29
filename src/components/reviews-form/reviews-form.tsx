@@ -1,4 +1,4 @@
-﻿import { useState, ChangeEvent, FormEvent, Fragment } from 'react';
+﻿import {useState, ChangeEvent, FormEvent, Fragment, memo} from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
 import {postCommentAction} from '../../store/api-action.ts';
@@ -14,7 +14,7 @@ const RATING_TITLES: { [key: number]: string } = {
   1: 'terribly'
 };
 
-function ReviewsForm(): JSX.Element {
+function ReviewsFormInner(): JSX.Element {
   const { offerId } = useParams<{ offerId: string }>();
   const dispatch = useAppDispatch();
 
@@ -120,5 +120,7 @@ function ReviewsForm(): JSX.Element {
     </form>
   );
 }
+
+const ReviewsForm = memo(ReviewsFormInner);
 
 export default ReviewsForm;

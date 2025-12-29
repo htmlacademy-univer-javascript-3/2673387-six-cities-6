@@ -70,13 +70,12 @@ function MainPage(): JSX.Element {
               />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map
-                  city={currentCity}
-                  locations={locations}
-                  activeLocation={activeLocation}
-                />
-              </section>
+              <Map
+                className="cities__map"
+                city={currentCity}
+                locations={locations}
+                activeLocation={activeLocation}
+              />
             </div>
           </div>
         </div>

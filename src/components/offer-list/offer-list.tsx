@@ -1,5 +1,6 @@
 ﻿import OfferCard from '../offer-card/offer-card.tsx';
 import {Offer} from '../../types/offer.ts';
+import {memo} from 'react';
 
 export type OfferListType = 'cities' | 'favorites' | 'near-places';
 
@@ -15,7 +16,7 @@ const listClassNames: Record<OfferListType, string> = {
   'near-places': 'near-places__list places__list',
 };
 
-function OfferList({offers, cardType, onCardHover}: OfferListProps): JSX.Element {
+function OfferListInner({offers, cardType, onCardHover}: OfferListProps): JSX.Element {
   const handleCardMouseEnter = (offerId: string) => {
     onCardHover?.(offerId);
   };
@@ -35,5 +36,7 @@ function OfferList({offers, cardType, onCardHover}: OfferListProps): JSX.Element
       ))}
     </div>);
 }
+
+const OfferList = memo(OfferListInner);
 
 export default OfferList;

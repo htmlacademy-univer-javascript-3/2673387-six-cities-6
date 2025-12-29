@@ -1,5 +1,6 @@
 ﻿import { Link } from 'react-router-dom';
 import {Offer} from '../../types/offer.ts';
+import {memo} from 'react';
 
 type OfferCardProps = {
   offer: Offer;
@@ -8,7 +9,7 @@ type OfferCardProps = {
   onMouseLeave: () => void;
 }
 
-function OfferCard({ offer, cardType, onMouseEnter, onMouseLeave }: OfferCardProps){
+function OfferCardInner({ offer, cardType, onMouseEnter, onMouseLeave }: OfferCardProps){
 
   const imgSize = cardType === 'favorites'
     ? { width: '150', height: '110' }
@@ -65,5 +66,7 @@ function OfferCard({ offer, cardType, onMouseEnter, onMouseLeave }: OfferCardPro
     </article>
   );
 }
+
+const OfferCard = memo(OfferCardInner);
 
 export default OfferCard;
