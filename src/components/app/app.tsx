@@ -6,15 +6,12 @@ import FavoritesPage from '../../pages/favorites-page/favorites-page.tsx';
 import OfferPage from '../../pages/offer-page/offer-page.tsx';
 import NotFoundPage from '../../pages/not-found-page/not-found-page.tsx';
 import PrivateRoute from '../private-route/private-route.tsx';
-import {useSelector} from 'react-redux';
 import {useAppSelector} from '../../hooks';
 import LoadingScreen from '../loading-screen/loading-screen.tsx';
 import { State } from '../../store';
 
 function App(): JSX.Element {
-  const offers = useSelector((state: State) => state[SliceType.Offers].offers);
   const authStatus = useAppSelector((state: State) => state[SliceType.User].authorizationStatus);
-
   const isOffersDataLoading = useAppSelector((state) => state[SliceType.Offers].isOffersDataLoading);
 
   if (isOffersDataLoading) {
@@ -22,7 +19,6 @@ function App(): JSX.Element {
       <LoadingScreen />
     );
   }
-
 
   return (
     <BrowserRouter>
@@ -39,7 +35,7 @@ function App(): JSX.Element {
           path={AppRoute.Favorites}
           element={
             <PrivateRoute authStatus={authStatus}>
-              <FavoritesPage offers={offers} />
+              <FavoritesPage />
             </PrivateRoute>
           }
         />
